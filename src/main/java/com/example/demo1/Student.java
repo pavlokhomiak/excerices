@@ -19,6 +19,7 @@ public class Student {
         if (nums[0] >= target) {
             return 0;
         }
+        
         for (int i = 1; i < nums.length; i++) {
             if (target == nums[i]) {
                 return i;

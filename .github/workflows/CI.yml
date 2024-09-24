@@ -3,6 +3,15 @@ name: Java CI with Maven and Update Containers
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, edited, reopened ]
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Run coverage with verbose output'
+        required: false
+        default: 'false'
 
 jobs:
   increment_version:
@@ -11,12 +20,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3.5.2
 
-      - name: Increment version in new branch
-        uses: ./.github/update-ui-version
-        with:
-          app_name: test-settings-ui
-          new_version: 4.3123
-          k8s_path_value: ${{ vars.K8S_PATH_VALUE }}
-          branch: test-branch_3.0
-          repository: YevhenZzz/changing-value-demo
-          token: ${{ secrets.PAT_TOKEN }}
+      - name: Test and coverage
+        run: |
+          if [ "${{ github.event.inputs.verbose }}" == "true" ]; then
+            echo "Running verbose coverage manually";
+          else
+            echo "Running coverage for pull request";
+          fi
+
+#      - name: Increment version in new branch
+#        uses: ./.github/update-ui-version
+#        with:
+#          app_name: test-settings-ui
+#          new_version: 4.3123
+#          k8s_path_value: ${{ vars.K8S_PATH_VALUE }}
+#          branch: test-branch_3.0
+#          repository: YevhenZzz/changing-value-demo
+#          token: ${{ secrets.PAT_TOKEN }}
