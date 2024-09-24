@@ -9,9 +9,10 @@ on:
   workflow_dispatch:
     inputs:
       verbose:
+        type: boolean
         description: 'Run coverage with verbose output'
-        required: false
-        default: 'false'
+        required: true
+        default: false
 
 jobs:
   increment_version:
